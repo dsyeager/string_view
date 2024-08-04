@@ -3,6 +3,7 @@
 #include "aton.h"
 
 #include <string_view>
+#include <iostream>
 
 namespace dsy
 {
@@ -10,6 +11,9 @@ namespace dsy
 /*
    This is a new, personal version of similar classes I've written/maintained in the past.
    It's functionality will grow as my personal projects require.
+
+   This class wraps std::string_view adding convenience methods that I've found useful when building apps
+   As std::string_view slowly matures, duplicate functionality will be deprecated here.
 */
 
 class string_view : public std::string_view
@@ -46,6 +50,57 @@ public:
             rem = &rem_local;
         val = ::aton<NUMB>(*this, rem);
         return rem->empty();
+    }
+
+    // TODO: add _ci (case insensitive) versions of each function
+
+    string_view before(char delim)
+    {
+        size_t pos = this->find(delim);
+        return this->substr(0, this->find(delim));
+    }
+
+    string_view before(string_view delim)
+    {
+        return this->substr(0, this->find(delim));
+    }
+
+    string_view after(char delim)
+    {
+        size_t pos = this->find(delim);
+        if (pos != std::string::npos)
+        {
+            return this->substr(pos + 1);
+        }
+        return "";
+    }
+
+    string_view after(string_view delim)
+    {
+        size_t pos = this->find(delim);
+        if (pos != std::string::npos)
+        {
+            return this->substr(pos + delim.length());
+        }
+        return "";
+    }
+
+    string_view& ltrim(char delim)
+    {
+        while (this->front() == delim)
+        {
+            this->remove_prefix(1);
+        }
+        return *this;
+    }
+   
+    string_view& rtrim(char delim)
+    {
+        while (this->back() == delim)
+        {
+            this->remove_suffix(1);
+        }
+        return *this;
     }
 
 };
