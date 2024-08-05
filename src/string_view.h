@@ -4,6 +4,7 @@
 
 #include <string_view>
 #include <iostream>
+#include <vector>
 
 namespace dsy
 {
@@ -35,11 +36,32 @@ public:
     {
         size_t pos = this->find(delim);
         string_view ret = this->substr(0, pos);
-        if (pos >= this->length() - 1) // -1 to make zero based
+        if (pos >= this->size() - 1) // -1 to make zero based
             *this = string_view();
         else
             *this = this->substr(pos + 1);
         return ret;
+    }
+
+    size_t split(char delim, std::vector<string_view> &vec)
+    {
+        size_t pos = this->find(delim);
+        size_t start = 0;
+        size_t cnt = 0;
+        while (pos != std::string_view::npos)
+        {
+            vec.push_back(this->substr(start, pos - start));
+            start = pos + 1;
+            pos = this-> find(delim, start);
+            cnt++;
+        }
+
+        if (start < this->size())
+        {
+            vec.push_back(this->substr(start));
+            cnt++;
+        }
+        return cnt; 
     }
 
     template<typename NUMB> bool aton(NUMB &val, std::string_view *rem = nullptr)
@@ -80,29 +102,51 @@ public:
         size_t pos = this->find(delim);
         if (pos != std::string::npos)
         {
-            return this->substr(pos + delim.length());
+            return this->substr(pos + delim.size());
         }
         return "";
     }
 
-    string_view& ltrim(char delim)
+    string_view& ltrim(char val)
     {
-        while (this->front() == delim)
+        while (this->front() == val)
         {
             this->remove_prefix(1);
         }
         return *this;
     }
-   
-    string_view& rtrim(char delim)
+
+    string_view& ltrim(string_view vals)
     {
-        while (this->back() == delim)
+        size_t pos = this->find_first_not_of(vals);
+        // 0, N, npos
+        this->remove_prefix(pos);
+        return *this;
+    }
+   
+    string_view& rtrim(char val)
+    {
+        while (this->back() == val)
         {
             this->remove_suffix(1);
         }
         return *this;
     }
 
-};
+    string_view& rtrim(string_view vals)
+    {
+        size_t pos = this->find_last_not_of(vals);
+        if (pos == npos)
+        {
+            *this = string_view();
+        }
+        else
+        {
+            this->remove_suffix(this->size() - pos - 1);
+        }
+        return *this;
+    }
 
-};
+}; // end string_view
+
+}; // end namespace dsy
