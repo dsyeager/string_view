@@ -127,6 +127,14 @@ void test_split()
     check_equals(*iter++, "lamb"sv, "split vec 4"sv);
 }
 
+void test_rsplit()
+{
+    string_view val("marry.had.a.little.lamb");
+    string_view sub = val.rsplit('.');
+    check_equals(val, "lamb"sv, "split remainder"sv);
+    check_equals(sub, "marry.had.a.little"sv, "split sub"sv);
+}
+
 template<typename NUMB> void test_aton_type(NUMB min_val, NUMB max_val, NUMB incr, string_view desc)
 {
     clock_t start = clock();
@@ -195,5 +203,6 @@ int main (int argc, char **argv)
     test_before();
     test_after();
     test_split();
+    test_rsplit();
     test_aton(aton_extra_min, aton_extra_max, aton_extra_incr);
 }

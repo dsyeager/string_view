@@ -43,6 +43,17 @@ public:
         return ret;
     }
 
+    string_view rsplit(char delim)
+    {
+        size_t pos = this->rfind(delim);
+        string_view ret = this->substr(0, pos);
+        if (pos >= this->size() - 1) // -1 to make zero based
+            *this = string_view();
+        else
+            *this = this->substr(pos + 1);
+        return ret;
+    }
+
     size_t split(char delim, std::vector<string_view> &vec)
     {
         size_t pos = this->find(delim);
