@@ -8,5 +8,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -O2")
 
 include_directories(../src)
 
-add_executable(test_logic test_string_view.cc)
+add_executable(test_string_view test_string_view.cc)
 
