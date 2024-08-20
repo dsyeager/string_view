@@ -60,13 +60,20 @@ void check_is_true(bool val, std::string_view desc, const std::source_location l
     }
 }
 
+void test_equals_ci()
+{
+    string_view val("Content-Length ");
+    check_is_true(val.equals_ci("content-length "sv), "equals_ci"sv);
+    check_is_true(!val.equals_ci("content-length"sv), "!equals_ci"sv);
+}
+
 void test_starts_with_ci()
 {
     string_view val("Content-Length: ");
-    check_is_true(val.starts_with_ci("Content"sv), "starts_with_ci"sv);
-    check_is_true(val.starts_with_ci("Content-Length"sv), "starts_with_ci"sv);
-    check_is_true(val.starts_with_ci("Content-Length: "sv), "starts_with_ci"sv);
-    check_is_true(!val.starts_with_ci("Content-Length: Hello"sv), "!starts_with_ci"sv);
+    check_is_true(val.starts_with_ci("coNtent"sv), "starts_with_ci"sv);
+    check_is_true(val.starts_with_ci("content-length"sv), "starts_with_ci"sv);
+    check_is_true(val.starts_with_ci("Content-length: "sv), "starts_with_ci"sv);
+    check_is_true(!val.starts_with_ci("lontent-Length: Hello"sv), "!starts_with_ci"sv);
 }
 
 void test_trim()
@@ -234,6 +241,7 @@ int main (int argc, char **argv)
     test_after();
     test_split();
     test_rsplit();
+    test_equals_ci();
     test_starts_with_ci();
     test_aton(aton_extra_min, aton_extra_max, aton_extra_incr);
 }

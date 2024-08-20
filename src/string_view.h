@@ -31,6 +31,12 @@ public:
 
     string_view(const std::string& val) :std::string_view(val) {}
 
+    bool equals_ci(const string_view &sv)
+    {
+        size_t sz = sv.size();
+        return sz == this->size() && 0 == strncasecmp(data(), sv.data(), sz);
+    }
+
     bool starts_with_ci(const string_view &sv)
     {
         size_t sz = sv.size();
