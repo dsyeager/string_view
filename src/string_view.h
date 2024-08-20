@@ -1,6 +1,7 @@
 #pragma once
 
 #include "aton.h"
+#include "strings.h" 
 
 #include <string_view>
 #include <iostream>
@@ -22,7 +23,7 @@ class string_view : public std::string_view
 public:
     string_view() :std::string_view() {}
 
-    string_view(const std::string_view& sv) :std::string_view(sv) {}
+    string_view(const std::string_view &sv) :std::string_view(sv) {}
 
     string_view(const char* val, size_t len) :std::string_view(val, len) {}
 
@@ -30,8 +31,14 @@ public:
 
     string_view(const std::string& val) :std::string_view(val) {}
 
+    bool starts_with_ci(const string_view &sv)
+    {
+        size_t sz = sv.size();
+        // strncasecmp is non-standard think about exchanging with something from stl
+        return sz <= this->size() && 0 == strncasecmp(data(), sv.data(), sz);
+    }
+
     // wishy washy about split vs remove_until
-    
     string_view split(char delim)
     {
         size_t pos = this->find(delim);

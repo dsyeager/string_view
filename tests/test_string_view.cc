@@ -50,6 +50,25 @@ void check_equals(auto left, auto right, std::string_view desc, const std::sourc
     }
 }
 
+void check_is_true(bool val, std::string_view desc, const std::source_location loc = std::source_location::current())
+{
+    test_obj.test_cnt++;
+    if (!val)
+    {
+        std::cerr << "FAILED, " << loc.function_name() << ", line: " << loc.line() << ", !true, " << desc << std::endl;
+        test_obj.fail_cnt++;
+    }
+}
+
+void test_starts_with_ci()
+{
+    string_view val("Content-Length: ");
+    check_is_true(val.starts_with_ci("Content"sv), "starts_with_ci"sv);
+    check_is_true(val.starts_with_ci("Content-Length"sv), "starts_with_ci"sv);
+    check_is_true(val.starts_with_ci("Content-Length: "sv), "starts_with_ci"sv);
+    check_is_true(!val.starts_with_ci("Content-Length: Hello"sv), "!starts_with_ci"sv);
+}
+
 void test_trim()
 {
     string_view val("marry.had.a.little.lamb");
@@ -215,5 +234,6 @@ int main (int argc, char **argv)
     test_after();
     test_split();
     test_rsplit();
+    test_starts_with_ci();
     test_aton(aton_extra_min, aton_extra_max, aton_extra_incr);
 }
