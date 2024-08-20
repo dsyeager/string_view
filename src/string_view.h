@@ -63,7 +63,7 @@ public:
         {
             vec.push_back(this->substr(start, pos - start));
             start = pos + 1;
-            pos = this-> find(delim, start);
+            pos = this->find(delim, start);
             cnt++;
         }
 
@@ -73,6 +73,28 @@ public:
             cnt++;
         }
         return cnt; 
+    }
+
+    size_t split(string_view delim, std::vector<string_view> &vec)
+    {
+        size_t pos = this->find(delim);
+        size_t start = 0;
+        size_t cnt = 0;
+        size_t delim_size = delim.size();
+        while (pos != std::string_view::npos)
+        {
+            vec.push_back(this->substr(start, pos - start));
+            start = pos + delim_size;
+            pos = this->find(delim, start);
+            cnt++;
+        }
+
+        if (start < this->size()) // no more delims so just push back
+        {
+            vec.push_back(this->substr(start));
+            cnt++;
+        }
+        return cnt;
     }
 
     template<typename NUMB> bool aton(NUMB &val, std::string_view *rem = nullptr)

@@ -125,6 +125,17 @@ void test_split()
     check_equals(*iter++, "a"sv, "split vec 2"sv);
     check_equals(*iter++, "little"sv, "split vec 3"sv);
     check_equals(*iter++, "lamb"sv, "split vec 4"sv);
+
+    val = "marry-+had-+a-+little-+lamb"sv;
+    subs.clear();
+    cnt = val.split("-+"sv, subs);
+    check_equals(cnt, 5, "split vec cnt"sv);
+    iter = subs.begin();
+    check_equals(*iter++, "marry"sv, "split vec 0"sv);
+    check_equals(*iter++, "had"sv, "split vec 1"sv);
+    check_equals(*iter++, "a"sv, "split vec 2"sv);
+    check_equals(*iter++, "little"sv, "split vec 3"sv);
+    check_equals(*iter++, "lamb"sv, "split vec 4"sv);
 }
 
 void test_rsplit()
