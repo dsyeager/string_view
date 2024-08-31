@@ -196,3 +196,13 @@ public:
 }; // end string_view
 
 }; // end namespace dsy
+
+
+std::pair<dsy::string_view, dsy::string_view> split(std::string_view str, char delim)
+{
+    size_t pos = str.find(delim);
+    if (pos == std::string_view::npos)
+        return std::make_pair(str, std::string_view("", 0));
+    return make_pair(str.substr(0, pos), str.substr(pos + 1));
+}
+
