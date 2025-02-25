@@ -1,8 +1,10 @@
 #pragma once
 
 #include <limits.h>
+#include <stdint.h>
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <limits>
